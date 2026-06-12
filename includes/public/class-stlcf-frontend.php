@@ -68,7 +68,7 @@ class STLCF_Frontend {
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
         // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $stlcf_form_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb}stlcf_forms WHERE id = %d", $stlcf_form_id ) );
+        $stlcf_form_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}stlcf_forms WHERE id = %d", $stlcf_form_id ) );
         // phpcs:enable
 
         if ( ! $stlcf_form_data ) { return ''; }
