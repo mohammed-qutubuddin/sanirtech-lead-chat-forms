@@ -28,10 +28,11 @@ class STLCF_Core {
      * Load required files for the plugin.
      */
     private function load_dependencies() {
-        require_once STLCF_PLUGIN_DIR . 'includes/class-stlcf-admin.php';
+        // Load the admin class from its new sub-folder
+        require_once STLCF_PLUGIN_DIR . 'includes/admin/class-stlcf-admin.php';
         
-        // Load the frontend rendering class
-        require_once STLCF_PLUGIN_DIR . 'includes/class-stlcf-frontend.php';
+        // Load the frontend rendering class from its new sub-folder
+        require_once STLCF_PLUGIN_DIR . 'includes/public/class-stlcf-frontend.php';
     }
 
     /**

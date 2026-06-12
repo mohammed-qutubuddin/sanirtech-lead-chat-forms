@@ -12,6 +12,14 @@ class STLCF_Frontend {
     }
 
     public function enqueue_frontend_scripts() {
+        // Enqueue our frontend public stylesheet from its new path
+        wp_enqueue_style(
+            'stlcf-public-style',
+            STLCF_PLUGIN_URL . 'assets/public/css/stlcf-public.css',
+            array(),
+            STLCF_VERSION
+        );
+
         $stlcf_g_settings = get_option( 'stlcf_general_settings', array() );
         $stlcf_c_type = isset( $stlcf_g_settings['captcha_type'] ) ? $stlcf_g_settings['captcha_type'] : 'none';
 
@@ -60,7 +68,7 @@ class STLCF_Frontend {
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
         // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $stlcf_form_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}stlcf_forms WHERE id = %d", $stlcf_form_id ) );
+        $stlcf_form_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb}stlcf_forms WHERE id = %d", $stlcf_form_id ) );
         // phpcs:enable
 
         if ( ! $stlcf_form_data ) { return ''; }

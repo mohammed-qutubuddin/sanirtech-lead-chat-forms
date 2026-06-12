@@ -24,10 +24,18 @@ class STLCF_Admin {
             wp_enqueue_script( 'jquery-ui-sortable' );
         }
 
-        // Cleanly enqueue our dedicated external JS file
+        // Enqueue our admin custom CSS stylesheet
+        wp_enqueue_style(
+            'stlcf-admin-style',
+            STLCF_PLUGIN_URL . 'assets/admin/css/stlcf-admin.css',
+            array(),
+            STLCF_VERSION
+        );
+
+        // Cleanly enqueue our dedicated external JS file from its new path
         wp_enqueue_script( 
             'stlcf-admin-script', 
-            STLCF_PLUGIN_URL . 'assets/js/stlcf-admin.js', 
+            STLCF_PLUGIN_URL . 'assets/admin/js/stlcf-admin.js', 
             array( 'jquery' ), 
             STLCF_VERSION, 
             true 
@@ -177,9 +185,9 @@ class STLCF_Admin {
         }
     }
 
-    public function render_forms_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin-views/view-forms.php'; }
-    public function render_add_new_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin-views/view-add-new.php'; }
-    public function render_categories_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin-views/view-categories.php'; }
-    public function render_entries_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin-views/view-entries.php'; }
-    public function render_settings_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin-views/view-settings.php'; }
+    public function render_forms_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-forms.php'; }
+    public function render_add_new_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-add-new.php'; }
+    public function render_categories_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-categories.php'; }
+    public function render_entries_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-entries.php'; }
+    public function render_settings_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-settings.php'; }
 }
