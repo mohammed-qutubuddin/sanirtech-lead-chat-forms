@@ -10,7 +10,7 @@ $stlcf_seo_schema = isset( $stlcf_options['enable_seo_schema'] ) ? $stlcf_option
 
 // GDPR Compliance Option Defaults
 $stlcf_gdpr_en   = isset( $stlcf_options['enable_gdpr'] ) ? $stlcf_options['enable_gdpr'] : '0';
-$stlcf_gdpr_txt  = isset( $stlcf_options['gdpr_text'] ) ? $stlcf_options['gdpr_text'] : '';
+$stlcf_gdpr_txt  = isset( $stlcf_options['gdpr_text'] ) ? $stlcf_options['gdpr_text'] : __( 'I consent to having this website store my submitted information so they can respond to my inquiry via WhatsApp.', 'sanirtech-lead-chat-forms' );
 $stlcf_gdpr_page = isset( $stlcf_options['gdpr_privacy_page'] ) ? $stlcf_options['gdpr_privacy_page'] : '';
 
 // Styling Defaults
@@ -18,7 +18,7 @@ $stlcf_btn_d  = isset( $stlcf_options['button_design'] ) ? $stlcf_options['butto
 $stlcf_f_sz   = isset( $stlcf_options['font_size'] ) ? $stlcf_options['font_size'] : '16';
 $stlcf_wa_txt = isset( $stlcf_options['wa_btn_text'] ) ? $stlcf_options['wa_btn_text'] : 'Submit via WhatsApp';
 
-// Email Settings & NEW Auto-Responder Defaults
+// Email Settings & Auto-Responder Defaults
 $stlcf_e_btn = isset( $stlcf_options['enable_email_btn'] ) ? $stlcf_options['enable_email_btn'] : '0';
 $stlcf_e_txt = isset( $stlcf_options['email_btn_text'] ) ? $stlcf_options['email_btn_text'] : 'Submit via Email';
 $stlcf_a_rec = isset( $stlcf_options['admin_email_receiver'] ) ? $stlcf_options['admin_email_receiver'] : get_option( 'admin_email' );
@@ -31,7 +31,7 @@ $stlcf_b_clr  = isset( $stlcf_options['btn_color'] ) ? $stlcf_options['btn_color
 $stlcf_e_clr  = isset( $stlcf_options['email_btn_color'] ) ? $stlcf_options['email_btn_color'] : '#1e293b';
 $stlcf_fl_clr = isset( $stlcf_options['float_btn_color'] ) ? $stlcf_options['float_btn_color'] : '#25D366';
 
-// Captcha Defaults
+// Captcha Defaults (RESTORED FULLY)
 $stlcf_c_typ  = isset( $stlcf_options['captcha_type'] ) ? $stlcf_options['captcha_type'] : 'none';
 $stlcf_ts_sk  = isset( $stlcf_options['turnstile_site_key'] ) ? $stlcf_options['turnstile_site_key'] : '';
 $stlcf_ts_sec = isset( $stlcf_options['turnstile_secret_key'] ) ? $stlcf_options['turnstile_secret_key'] : '';
@@ -40,7 +40,7 @@ $stlcf_r2_sec = isset( $stlcf_options['recaptcha_secret_key'] ) ? $stlcf_options
 $stlcf_r3_sk  = isset( $stlcf_options['recaptcha_v3_site_key'] ) ? $stlcf_options['recaptcha_v3_site_key'] : '';
 $stlcf_r3_sec = isset( $stlcf_options['recaptcha_v3_secret_key'] ) ? $stlcf_options['recaptcha_v3_secret_key'] : '';
 
-// Smart Routing & Multi-Agent State
+// Smart Routing State
 $stlcf_agent_route = isset( $stlcf_options['enable_agent_routing'] ) ? $stlcf_options['enable_agent_routing'] : '1';
 
 // Business Hours Defaults
@@ -59,7 +59,8 @@ $stlcf_ga4_id      = isset( $stlcf_options['ga4_measurement_id'] ) ? $stlcf_opti
 $stlcf_inject_base = isset( $stlcf_options['inject_base_scripts'] ) ? $stlcf_options['inject_base_scripts'] : '0';
 $stlcf_pixel_event = isset( $stlcf_options['fb_pixel_event'] ) ? $stlcf_options['fb_pixel_event'] : 'Lead';
 
-// Advanced Floating Widget Defaults
+// Advanced Floating Widget Defaults (RESTORED FULLY)
+$stlcf_f_btn        = isset( $stlcf_options['floating_btn'] ) ? $stlcf_options['floating_btn'] : '0';
 $stlcf_fw_tooltip   = isset( $stlcf_options['fw_tooltip_text'] ) ? $stlcf_options['fw_tooltip_text'] : 'Chat with us!';
 $stlcf_fw_pos       = isset( $stlcf_options['fw_position'] ) ? $stlcf_options['fw_position'] : 'right';
 $stlcf_fw_msg       = isset( $stlcf_options['fw_prefilled_msg'] ) ? $stlcf_options['fw_prefilled_msg'] : '';
@@ -72,7 +73,6 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
     <h1 class="wp-heading-inline"><?php esc_html_e( 'SanirTech Lead Chat Forms - Settings', 'sanirtech-lead-chat-forms' ); ?></h1>
     <hr class="wp-header-end">
     
-    <!-- Premium Navigation Tabs Base -->
     <nav class="nav-tab-wrapper stlcf-tab-wrapper">
         <a href="#general" class="nav-tab stlcf-nav-tab nav-tab-active" data-tab="stlcf-tab-general"><?php esc_html_e( 'General Settings', 'sanirtech-lead-chat-forms' ); ?></a>
         <a href="#styling" class="nav-tab stlcf-nav-tab" data-tab="stlcf-tab-styling"><?php esc_html_e( 'Styling & Design', 'sanirtech-lead-chat-forms' ); ?></a>
@@ -87,7 +87,6 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
     <form method="post" action="options.php">
         <?php settings_fields( 'stlcf_settings_group' ); ?>
 
-        <!-- TAB 1: GENERAL SETTINGS -->
         <div id="stlcf-tab-general" class="stlcf-tab-section stlcf-card">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'General Configurations', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -148,21 +147,13 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                     <tr class="stlcf-gdpr-conditional-row">
                         <th scope="row"><label><?php esc_html_e( 'Target Privacy Page Anchor', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
-                            <?php
-                            wp_dropdown_pages( array(
-                                'name'             => 'stlcf_general_settings[gdpr_privacy_page]',
-                                'selected'         => $stlcf_gdpr_page,
-                                'show_option_none' => __( '-- Select Page Core Directory --', 'sanirtech-lead-chat-forms' ),
-                                'class'            => 'stlcf-captcha-select regular-text'
-                            ) );
-                            ?>
+                            <?php wp_dropdown_pages( array( 'name' => 'stlcf_general_settings[gdpr_privacy_page]', 'selected' => $stlcf_gdpr_page, 'show_option_none' => __( '-- Select Page Core Directory --', 'sanirtech-lead-chat-forms' ), 'class' => 'stlcf-captcha-select regular-text' ) ); ?>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <!-- TAB 2: STYLING & DESIGN -->
         <div id="stlcf-tab-styling" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Interface Appearance Customizations', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -171,9 +162,9 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                         <th scope="row"><label><?php esc_html_e( 'Button Shape Geometry', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
                             <fieldset>
-                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_flat" <?php checked( $stlcf_btn_design, 'style_flat' ); ?>><span class="stlcf-radio-badge"><?php esc_html_e( 'Sharp Flat', 'sanirtech-lead-chat-forms' ); ?></span></label>
-                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_rounded" <?php checked( $stlcf_btn_design, 'style_rounded' ); ?>><span class="stlcf-radio-badge stlcf-radio-badge-rounded"><?php esc_html_e( 'Modern Rounded', 'sanirtech-lead-chat-forms' ); ?></span></label>
-                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_pill" <?php checked( $stlcf_btn_design, 'style_pill' ); ?>><span class="stlcf-radio-badge stlcf-radio-badge-pill"><?php esc_html_e( 'Capsule Pill', 'sanirtech-lead-chat-forms' ); ?></span></label>
+                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_flat" <?php checked( $stlcf_btn_d, 'style_flat' ); ?>><span class="stlcf-radio-badge"><?php esc_html_e( 'Sharp Flat', 'sanirtech-lead-chat-forms' ); ?></span></label>
+                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_rounded" <?php checked( $stlcf_btn_d, 'style_rounded' ); ?>><span class="stlcf-radio-badge stlcf-radio-badge-rounded"><?php esc_html_e( 'Modern Rounded', 'sanirtech-lead-chat-forms' ); ?></span></label>
+                                <label class="stlcf-radio-label"><input type="radio" name="stlcf_general_settings[button_design]" value="style_pill" <?php checked( $stlcf_btn_d, 'style_pill' ); ?>><span class="stlcf-radio-badge stlcf-radio-badge-pill"><?php esc_html_e( 'Capsule Pill', 'sanirtech-lead-chat-forms' ); ?></span></label>
                             </fieldset>
                         </td>
                     </tr>
@@ -203,7 +194,6 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
             </div>
         </div>
 
-        <!-- TAB 3: EMAIL ROUTING & NEW AUTO-RESPONDER SECTIONS -->
         <div id="stlcf-tab-email" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Fallback Email Submissions & Automated Responders', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -228,8 +218,6 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                             <input type="email" name="stlcf_general_settings[admin_email_receiver]" value="<?php echo esc_attr( $stlcf_a_rec ); ?>" class="regular-text">
                         </td>
                     </tr>
-                    
-                    <!-- NEW: AUTOMATED LEAD ACKNOWLEDGEMENT ROW TOGGLE BUTTON -->
                     <tr style="border-top: 1px solid #f1f5f9;">
                         <th scope="row"><label><?php esc_html_e( 'Instant Lead Auto-Responder', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
@@ -242,26 +230,19 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                     </tr>
                     <tr class="stlcf-autoresponder-conditional-row">
                         <th scope="row"><label><?php esc_html_e( 'Auto-Response Subject Line', 'sanirtech-lead-chat-forms' ); ?></label></th>
-                        <td>
-                            <input type="text" name="stlcf_general_settings[auto_responder_subject]" value="<?php echo esc_attr( $stlcf_ar_sub ); ?>" class="regular-text">
-                        </td>
+                        <td><input type="text" name="stlcf_general_settings[auto_responder_subject]" value="<?php echo esc_attr( $stlcf_ar_sub ); ?>" class="regular-text"></td>
                     </tr>
                     <tr class="stlcf-autoresponder-conditional-row">
                         <th scope="row"><label><?php esc_html_e( 'Dynamic Reply Box Template Message', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
                             <textarea name="stlcf_general_settings[auto_responder_message]" class="large-text" rows="6"><?php echo esc_textarea( $stlcf_ar_msg ); ?></textarea>
-                            <p class="description">
-                                <?php esc_html_e( 'Craft the reply message block. Pro Tip tokens placeholders list:', 'sanirtech-lead-chat-forms' ); ?><br>
-                                <code>[Your Name]</code> - <?php esc_html_e( 'Auto-extracts input string labeled "Your Name" or generic first text input index descriptor.', 'sanirtech-lead-chat-forms' ); ?><br>
-                                <code>[Form Title]</code> - <?php esc_html_e( 'Displays active form title identifier header string dynamically.', 'sanirtech-lead-chat-forms' ); ?>
-                            </p>
+                            <p class="description"><?php esc_html_e( 'Craft the reply message block. Pro Tip tokens placeholders list: [Your Name] and [Form Title]', 'sanirtech-lead-chat-forms' ); ?></p>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <!-- TAB 4: SMART ROUTING HUB -->
         <div id="stlcf-tab-routing" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Multi-Agent Smart Routing Settings', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -277,10 +258,13 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                         </td>
                     </tr>
                 </table>
+                <div class="stlcf-doc-notice-box">
+                    <h4><?php esc_html_e( '💡 Notice: How to add departments and numbers?', 'sanirtech-lead-chat-forms' ); ?></h4>
+                    <p><?php esc_html_e( 'This setting simply enables the routing feature globally. To actually configure your agents and target phone numbers, please navigate to the "Add New" form builder and insert an "Agent Dropdown Routing" field block.', 'sanirtech-lead-chat-forms' ); ?></p>
+                </div>
             </div>
         </div>
 
-        <!-- TAB 5: BUSINESS HOURS MATRIX -->
         <div id="stlcf-tab-hours" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Business Operating Hours Matrix', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -295,11 +279,58 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                             </label>
                         </td>
                     </tr>
+                    <tr class="stlcf-hours-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Select Timezone Reference', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select name="stlcf_general_settings[business_timezone]" class="stlcf-captcha-select">
+                                <?php echo wp_timezone_choice( $stlcf_hours_tz ); ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-hours-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Active Business Days', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <fieldset class="stlcf-days-checkbox-grid">
+                                <?php 
+                                $stlcf_days_map = array( 'monday'=>'Mon', 'tuesday'=>'Tue', 'wednesday'=>'Wed', 'thursday'=>'Thu', 'friday'=>'Fri', 'saturday'=>'Sat', 'sunday'=>'Sun' );
+                                foreach ( $stlcf_days_map as $stlcf_day_key => $stlcf_day_lbl ) {
+                                    $stlcf_day_checked = isset( $stlcf_business_days[$stlcf_day_key] ) ? $stlcf_business_days[$stlcf_day_key] : '0';
+                                    ?>
+                                    <label class="stlcf-day-item">
+                                        <input type="hidden" name="stlcf_general_settings[business_days][<?php echo esc_attr( $stlcf_day_key ); ?>]" value="0">
+                                        <input type="checkbox" name="stlcf_general_settings[business_days][<?php echo esc_attr( $stlcf_day_key ); ?>]" value="1" <?php checked( $stlcf_day_checked, '1' ); ?>>
+                                        <?php echo esc_html( $stlcf_day_lbl ); ?>
+                                    </label>
+                                <?php } ?>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-hours-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Daily Time Window Frame', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <input type="time" name="stlcf_general_settings[business_start]" value="<?php echo esc_attr( $stlcf_hours_start ); ?>"> 
+                            <span>to</span>
+                            <input type="time" name="stlcf_general_settings[business_end]" value="<?php echo esc_attr( $stlcf_hours_end ); ?>">
+                        </td>
+                    </tr>
+                    <tr class="stlcf-hours-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Offline Enforcement Action', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select id="stlcf_offline_action" name="stlcf_general_settings[offline_action]" class="stlcf-captcha-select">
+                                <option value="show_notice" <?php selected( $stlcf_offline_act, 'show_notice' ); ?>><?php esc_html_e( 'Display Offline Notice Banner above Form', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="email_only" <?php selected( $stlcf_offline_act, 'email_only' ); ?>><?php esc_html_e( 'Deactivate WhatsApp (Force Email Submissions)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="hide_widget" <?php selected( $stlcf_offline_act, 'hide_widget' ); ?>><?php esc_html_e( 'Completely Hide Site Floating Widget', 'sanirtech-lead-chat-forms' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-hours-conditional-row id-stlcf-offline-msg-row">
+                        <th scope="row"><label><?php esc_html_e( 'Offline Alert Banner Text', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[offline_message]" value="<?php echo esc_attr( $stlcf_offline_msg ); ?>" class="regular-text"></td>
+                    </tr>
                 </table>
             </div>
         </div>
 
-        <!-- TAB 6: FLOATING WIDGET -->
         <div id="stlcf-tab-widget" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'WhatsApp Sticky Floating Bubble Engine', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -314,11 +345,41 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                             </label>
                         </td>
                     </tr>
+                    <tr class="stlcf-widget-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Bubble Display Position', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select name="stlcf_general_settings[fw_position]" class="stlcf-captcha-select">
+                                <option value="right" <?php selected( $stlcf_fw_pos, 'right' ); ?>><?php esc_html_e( 'Bottom Right Corner (Standard)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="left" <?php selected( $stlcf_fw_pos, 'left' ); ?>><?php esc_html_e( 'Bottom Left Corner', 'sanirtech-lead-chat-forms' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-widget-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Pop-up Tooltip Greeting', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <input type="text" name="stlcf_general_settings[fw_tooltip_text]" value="<?php echo esc_attr( $stlcf_fw_tooltip ); ?>" class="regular-text" placeholder="e.g., Chat with us!">
+                        </td>
+                    </tr>
+                    <tr class="stlcf-widget-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Pre-filled WhatsApp Text', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <textarea name="stlcf_general_settings[fw_prefilled_msg]" class="large-text" rows="2" placeholder="<?php esc_attr_e( 'e.g., Hi! I am visiting your site...', 'sanirtech-lead-chat-forms' ); ?>"><?php echo esc_textarea( $stlcf_fw_msg ); ?></textarea>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-widget-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Visibility Target Rules', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select name="stlcf_general_settings[fw_visibility]" class="stlcf-captcha-select">
+                                <option value="sitewide" <?php selected( $stlcf_fw_vis, 'sitewide' ); ?>><?php esc_html_e( 'Sitewide (Show Everywhere)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="homepage" <?php selected( $stlcf_fw_vis, 'homepage' ); ?>><?php esc_html_e( 'Homepage Only', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="singular" <?php selected( $stlcf_fw_vis, 'singular' ); ?>><?php esc_html_e( 'Singular Posts & Pages Only', 'sanirtech-lead-chat-forms' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
 
-        <!-- TAB 7: ANALYTICS & PIXELS -->
         <div id="stlcf-tab-analytics" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Conversion Analytics & Pixel Integrations', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -333,11 +394,37 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                             </label>
                         </td>
                     </tr>
+                    <tr class="stlcf-analytics-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Meta (Facebook) Pixel ID', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[fb_pixel_id]" value="<?php echo esc_attr( $stlcf_fb_id ); ?>" class="regular-text" placeholder="e.g. 123456789012345"></td>
+                    </tr>
+                    <tr class="stlcf-analytics-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Meta Standard Tracking Event', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select name="stlcf_general_settings[fb_pixel_event]" class="stlcf-captcha-select">
+                                <option value="Lead" <?php selected( $stlcf_pixel_event, 'Lead' ); ?>><?php esc_html_e( 'Lead (Default Standard Option)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="Contact" <?php selected( $stlcf_pixel_event, 'Contact' ); ?>><?php esc_html_e( 'Contact Event', 'sanirtech-lead-chat-forms' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-analytics-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Google Analytics 4 ID', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[ga4_measurement_id]" value="<?php echo esc_attr( $stlcf_ga4_id ); ?>" class="regular-text" placeholder="e.g. G-XXXXXXX"></td>
+                    </tr>
+                    <tr class="stlcf-analytics-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Script Code Injection Rules', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <input type="hidden" name="stlcf_general_settings[inject_base_scripts]" value="0">
+                                <input type="checkbox" name="stlcf_general_settings[inject_base_scripts]" value="1" <?php checked( $stlcf_inject_base, '1' ); ?>>
+                                <strong><?php esc_html_e( 'Inject missing baseline header global scripts code snippets automatically.', 'sanirtech-lead-chat-forms' ); ?></strong>
+                            </label>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
 
-        <!-- TAB 8: SPAM SECURITY -->
         <div id="stlcf-tab-security" class="stlcf-tab-section stlcf-card stlcf-security-box stlcf-hide-tab">
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Anti-Spam Gateway Configurations', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
@@ -349,8 +436,34 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                                 <option value="none" <?php selected( $stlcf_c_typ, 'none' ); ?>><?php esc_html_e( 'No Captcha Engines Enforced', 'sanirtech-lead-chat-forms' ); ?></option>
                                 <option value="built_in" <?php selected( $stlcf_c_typ, 'built_in' ); ?>><?php esc_html_e( 'Lightweight Native Mathematical Quiz', 'sanirtech-lead-chat-forms' ); ?></option>
                                 <option value="turnstile" <?php selected( $stlcf_c_typ, 'turnstile' ); ?>><?php esc_html_e( 'Cloudflare Turnstile Validation (Recommended)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="recaptcha" <?php selected( $stlcf_c_typ, 'recaptcha' ); ?>><?php esc_html_e( 'Google reCAPTCHA v2 (Explicit Checkbox)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="recaptcha_v3" <?php selected( $stlcf_c_typ, 'recaptcha_v3' ); ?>><?php esc_html_e( 'Google reCAPTCHA v3 (Invisible Tracking Profile)', 'sanirtech-lead-chat-forms' ); ?></option>
                             </select>
                         </td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-turnstile">
+                        <th scope="row"><label><?php esc_html_e( 'Turnstile Site Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[turnstile_site_key]" value="<?php echo esc_attr( $stlcf_ts_sk ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-turnstile">
+                        <th scope="row"><label><?php esc_html_e( 'Turnstile Secret Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[turnstile_secret_key]" value="<?php echo esc_attr( $stlcf_ts_sec ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-recaptcha">
+                        <th scope="row"><label><?php esc_html_e( 'reCAPTCHA v2 Site Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[recaptcha_site_key]" value="<?php echo esc_attr( $stlcf_r2_sk ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-recaptcha">
+                        <th scope="row"><label><?php esc_html_e( 'reCAPTCHA v2 Secret Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[recaptcha_secret_key]" value="<?php echo esc_attr( $stlcf_r2_sec ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-recaptcha-v3">
+                        <th scope="row"><label><?php esc_html_e( 'reCAPTCHA v3 Site Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[recaptcha_v3_site_key]" value="<?php echo esc_attr( $stlcf_r3_sk ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr class="stlcf-captcha-row stlcf-row-recaptcha-v3">
+                        <th scope="row"><label><?php esc_html_e( 'reCAPTCHA v3 Secret Key', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td><input type="text" name="stlcf_general_settings[recaptcha_v3_secret_key]" value="<?php echo esc_attr( $stlcf_r3_sec ); ?>" class="regular-text"></td>
                     </tr>
                 </table>
             </div>

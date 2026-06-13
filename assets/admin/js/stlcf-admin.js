@@ -1,7 +1,15 @@
+/**
+ * SANIRTECH FORMS - MASTER CONTROL UTILITY ENGINE
+ * Core administrative JavaScript file managing Drag-and-Drop Form repeaters,
+ * smooth dynamic tab routing, and responsive visibility options toggles.
+ */
 jQuery(document).ready(function($) {
-    
-    // 1. ADD NEW FORM SCRIPT (Drag-and-Drop Sortable Rows with Settings Verification)
+
+    // ==========================================================================
+    // 1. ADD NEW FORM ENGINE (Drag-and-Drop Repeater Fields Structure)
+    // ==========================================================================
     if ($('#stlcf-fields-container').length > 0) {
+        
         $('#stlcf-fields-container').sortable({ 
             handle: '.dashicons-menu', 
             placeholder: 'ui-state-highlight' 
@@ -10,11 +18,9 @@ jQuery(document).ready(function($) {
         var rowIndex = $('#stlcf-fields-container .stlcf-field-row').length;
         
         $('#stlcf-add-field-btn').on('click', function() {
-            // Read state parameter from HTML5 data element boundary
             var isAgentEnabled = $('#stlcf-fields-container').attr('data-agent-routing');
             var agentOptionMarkup = '';
             
-            // Only prepare markup node if feature is globally approved in settings
             if (isAgentEnabled === '1') {
                 agentOptionMarkup = '<option value="agent_select">Agent Dropdown Routing</option>';
             }
@@ -26,7 +32,7 @@ jQuery(document).ready(function($) {
                     '<option value="email">Email Field</option>' +
                     '<option value="textarea">Textarea</option>' +
                     '<option value="number">Number</option>' +
-                    agentOptionMarkup + // Inject conditionally based on settings dashboard switch
+                    agentOptionMarkup +
                 '</select>' +
                 '<input type="text" name="stlcf_fields[' + rowIndex + '][label]" placeholder="Custom Field Label" required>' +
                 '<label><input type="checkbox" name="stlcf_fields[' + rowIndex + '][required]" value="1"> Required</label>' +
@@ -60,7 +66,9 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // 2. SETTINGS PAGE SCRIPT (Tabs Navigation Engine)
+    // ==========================================================================
+    // 2. DASHBOARD SETTINGS ENGINE (Tabs Navigation System)
+    // ==========================================================================
     $('.stlcf-nav-tab').on('click', function(e) {
         e.preventDefault();
         var targetSectionId = $(this).attr('data-tab');
@@ -80,6 +88,9 @@ jQuery(document).ready(function($) {
         if (correspondingTab.length) { correspondingTab.trigger('click'); }
     }
 
+    // ==========================================================================
+    // 3. SECURE CONDITIONAL SETTINGS FIELDS TOGGLES (UI Visibility Handlers)
+    // ==========================================================================
     var captchaSelector = $('#stlcf_captcha_type');
     function computeCaptchaVisibility() {
         var selectedValue = captchaSelector.val();
@@ -93,38 +104,11 @@ jQuery(document).ready(function($) {
         computeCaptchaVisibility();
     }
 
-    // 3. FORMS LISTING SCRIPT (Copy Shortcode)
-    if ($('.stlcf-copy-btn').length > 0) {
-        $('.stlcf-copy-btn').on('click', function() {
-            var shortcode = $(this).attr('data-clipboard');
-            var $btn = $(this);
-            var $icon = $btn.find('.dashicons');
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shortcode).then(function() {
-                    $icon.removeClass('dashicons-admin-page').addClass('dashicons-saved');
-                    setTimeout(function() { $icon.removeClass('dashicons-saved').addClass('dashicons-admin-page'); }, 1500);
-                });
-            } else {
-                var $temp = $('<input>');
-                $('body').append($temp);
-                $temp.val(shortcode).select();
-                document.execCommand('copy');
-                $temp.remove();
-                $icon.removeClass('dashicons-admin-page').addClass('dashicons-saved');
-                setTimeout(function() { $icon.removeClass('dashicons-saved').addClass('dashicons-admin-page'); }, 1500);
-            }
-        });
-    }
-
-    // 4. BUSINESS HOURS INTERACTIVE PANEL CONTROLLER
     var hoursMasterToggle = $('#stlcf_enable_business_hours');
     var offlineActionSelector = $('#stlcf_offline_action');
-
     function computeHoursFieldsVisibility() {
         if (hoursMasterToggle.is(':checked')) {
             $('.stlcf-hours-conditional-row').show();
-            // Nested dependency check: Only reveal notice message field if notice banner action is selected
             if (offlineActionSelector.val() === 'show_notice') {
                 $('.id-stlcf-offline-msg-row').show();
             } else {
@@ -134,14 +118,12 @@ jQuery(document).ready(function($) {
             $('.stlcf-hours-conditional-row').hide();
         }
     }
-
     if (hoursMasterToggle.length > 0) {
         hoursMasterToggle.on('change', computeHoursFieldsVisibility);
         offlineActionSelector.on('change', computeHoursFieldsVisibility);
-        computeHoursFieldsVisibility(); // Initialize immediately on system run execution
+        computeHoursFieldsVisibility();
     }
 
-    // 5. ANALYTICS & PIXELS TAB MANAGEMENT LAYERS
     var analyticsToggle = $('#stlcf_enable_pixels_tracking');
     function computeAnalyticsVisibility() {
         if (analyticsToggle.is(':checked')) {
@@ -155,7 +137,6 @@ jQuery(document).ready(function($) {
         computeAnalyticsVisibility();
     }
 
-    // 6. GDPR LIVE COMPLIANCE INTERACTIVE TAB CONTROL
     var gdprMasterToggle = $('#stlcf_enable_gdpr');
     function computeGdprFieldsVisibility() {
         if (gdprMasterToggle.is(':checked')) {
@@ -169,7 +150,6 @@ jQuery(document).ready(function($) {
         computeGdprFieldsVisibility();
     }
 
-    // 7. FLOATING WIDGET TAB INTERACTION RULES
     var widgetMasterToggle = $('#stlcf_floating_btn');
     function computeWidgetFieldsVisibility() {
         if (widgetMasterToggle.is(':checked')) {
@@ -183,7 +163,6 @@ jQuery(document).ready(function($) {
         computeWidgetFieldsVisibility();
     }
 
-    // 8. EMAIL AUTO-RESPONDER PANEL ACCORDION INTERACTION CONTROLS
     var responderToggle = $('#stlcf_enable_auto_responder');
     function computeAutoresponderFieldsVisibility() {
         if (responderToggle.is(':checked')) {
@@ -195,5 +174,53 @@ jQuery(document).ready(function($) {
     if (responderToggle.length > 0) {
         responderToggle.on('change', computeAutoresponderFieldsVisibility);
         computeAutoresponderFieldsVisibility();
+    }
+
+    // ==========================================================================
+    // 4. INTERACTIVE SHORTCODE COPY ENGINE (Unified Clipboard System)
+    // ==========================================================================
+    var combinedCopyTriggers = $('.stlcf-copy-btn, .stlcf-list-copy-btn');
+    
+    if (combinedCopyTriggers.length > 0) {
+        combinedCopyTriggers.on('click', function(e) {
+            e.preventDefault();
+            
+            var shortcodeTextString = $(this).attr('data-clipboard') || $(this).attr('data-shortcode');
+            if (!shortcodeTextString) {
+                shortcodeTextString = $(this).siblings('.stlcf-shortcode-code').text();
+            }
+
+            var $buttonWrapperNode = $(this);
+            var $dashiconGraphicElement = $buttonWrapperNode.find('.dashicons');
+            
+            if (shortcodeTextString) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(shortcodeTextString).then(function() {
+                        triggerCopySuccessFeedback($buttonWrapperNode, $dashiconGraphicElement);
+                    });
+                } else {
+                    var $tempTransferNode = $('<input>');
+                    $('body').append($tempTransferNode);
+                    $tempTransferNode.val(shortcodeTextString).select();
+                    document.execCommand('copy');
+                    $tempTransferNode.remove();
+                    triggerCopySuccessFeedback($buttonWrapperNode, $dashiconGraphicElement);
+                }
+            }
+        });
+    }
+
+    function triggerCopySuccessFeedback($btn, $icon) {
+        var originalIconClass = $icon.hasClass('dashicons-saved') ? 'dashicons-saved' : 'dashicons-admin-page';
+        var activeSuccessClass = $icon.hasClass('dashicons-saved') ? 'dashicons-yes' : 'dashicons-saved';
+        
+        $icon.removeClass(originalIconClass).addClass(activeSuccessClass);
+        var originalBackground = $btn.css('background-color');
+        $btn.css('background-color', '#d1fae5');
+        
+        setTimeout(function() { 
+            $icon.removeClass(activeSuccessClass).addClass(originalIconClass); 
+            $btn.css('background-color', originalBackground);
+        }, 1500);
     }
 });
