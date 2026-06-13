@@ -400,3 +400,74 @@
     color: #b91c1c; 
     text-decoration: underline; 
 }
+
+/* Multi-Agent Configuration Box Model Standards */
+.stlcf-hide-field { display: none !important; }
+.stlcf-field-row { flex-wrap: wrap !important; } /* Allows multi-line wrap for textarea */
+.stlcf-routing-config { width: 100%; margin-top: 12px; padding: 10px; background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; }
+.stlcf-routing-config .description { margin: 0 0 6px 0; font-size: 11px; color: #64748b; }
+.stlcf-routing-config textarea { width: 100%; height: 70px; font-family: monospace; font-size: 12px; border: 1px solid #cbd5e1; padding: 6px; box-sizing: border-box; resize: vertical; }
+
+/* Premium Smart Routing Info Documentation Guide Box Layout */
+.stlcf-doc-notice-box {
+    margin-top: 25px;
+    padding: 15px 20px;
+    background: #f0f7ff;
+    border-left: 4px solid #007cba;
+    border-radius: 0 4px 4px 0;
+}
+.stlcf-doc-notice-box h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #0c4a6e;
+    font-weight: 600;
+}
+.stlcf-doc-notice-box p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #334155;
+}
+.stlcf-code-preview-block {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    padding: 10px 15px;
+    margin: 12px 0;
+    border-radius: 4px;
+}
+.stlcf-code-preview-block code {
+    display: block;
+    font-family: monospace;
+    font-size: 13px;
+    color: #0f172a;
+    margin-bottom: 6px;
+    background: transparent !important;
+    padding: 0 !important;
+}
+.stlcf-code-preview-block code:last-child {
+    margin-bottom: 0;
+}
+.stlcf-warning-text {
+    color: #b91c1c !important;
+    font-size: 12px !important;
+    margin-top: 10px !important;
+}
+
+/* Business Hours Grid Selection Component Rules */
+.stlcf-days-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 100%;
+    background: #fafafa;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+}
+.stlcf-day-item {
+    font-size: 13px;
+    font-weight: 500;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}

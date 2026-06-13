@@ -30,6 +30,10 @@ if ( isset( $_GET['action'] ) && sanitize_key( wp_unslash( $_GET['action'] ) ) =
 }
 
 $stlcf_dynamic_categories = $this->get_all_categories();
+
+// Fetch Global Smart Routing authorization state safely
+$stlcf_settings_cache = get_option( 'stlcf_general_settings', array() );
+$stlcf_agent_enabled  = isset( $stlcf_settings_cache['enable_agent_routing'] ) ? $stlcf_settings_cache['enable_agent_routing'] : '1';
 ?>
 <div class="wrap">
     <h1><?php echo $stlcf_is_editing_now ? esc_html__( 'Modify Form Attributes', 'sanirtech-lead-chat-forms' ) : esc_html__( 'Create Custom WhatsApp Form', 'sanirtech-lead-chat-forms' ); ?></h1>
@@ -41,6 +45,7 @@ $stlcf_dynamic_categories = $this->get_all_categories();
 
         <div class="stlcf-builder-layout">
             
+            <!-- Main Content Canvas (Left Column) -->
             <div class="stlcf-builder-main stlcf-card">
                 <div class="stlcf-card-body">
                     <div class="stlcf-form-group">
@@ -50,7 +55,8 @@ $stlcf_dynamic_categories = $this->get_all_categories();
                     
                     <h3 class="stlcf-builder-heading"><?php esc_html_e( 'Form Fields (Drag & Drop to Reorder)', 'sanirtech-lead-chat-forms' ); ?></h3>
                     
-                    <div id="stlcf-fields-container">
+                    <!-- HTML5 data attribute configuration for JS state control mapping -->
+                    <div id="stlcf-fields-container" data-agent-routing="<?php echo esc_attr( $stlcf_agent_enabled ); ?>">
                         <?php 
                         if ( is_array( $stlcf_fields_array ) ) {
                             foreach ( $stlcf_fields_array as $stlcf_idx => $stlcf_fld ) {
@@ -65,13 +71,27 @@ $stlcf_dynamic_categories = $this->get_all_categories();
                                         <option value="email" <?php selected( $stlcf_cur_type, 'email' ); ?>><?php esc_html_e( 'Email Field', 'sanirtech-lead-chat-forms' ); ?></option>
                                         <option value="textarea" <?php selected( $stlcf_cur_type, 'textarea' ); ?>><?php esc_html_e( 'Textarea', 'sanirtech-lead-chat-forms' ); ?></option>
                                         <option value="number" <?php selected( $stlcf_cur_type, 'number' ); ?>><?php esc_html_e( 'Number', 'sanirtech-lead-chat-forms' ); ?></option>
+                                        
+                                        <!-- CONDITION CONTROLLED OPTION NODE: Disappears when inactive globally, safe if data already exists -->
+                                        <?php if ( $stlcf_agent_enabled === '1' || $stlcf_cur_type === 'agent_select' ) : ?>
+                                            <option value="agent_select" <?php selected( $stlcf_cur_type, 'agent_select' ); ?>><?php esc_html_e( 'Agent Dropdown Routing', 'sanirtech-lead-chat-forms' ); ?></option>
+                                        <?php endif; ?>
                                     </select>
+                                    
                                     <input type="text" name="stlcf_fields[<?php echo intval( $stlcf_idx ); ?>][label]" value="<?php echo esc_attr( $stlcf_cur_lbl ); ?>" placeholder="<?php esc_attr_e( 'Field Label', 'sanirtech-lead-chat-forms' ); ?>" required>
+                                    
                                     <label class="stlcf-req-checkbox-label">
                                         <input type="checkbox" name="stlcf_fields[<?php echo intval( $stlcf_idx ); ?>][required]" value="1" <?php checked( $stlcf_is_req, 1 ); ?>> 
                                         <?php esc_html_e( 'Required', 'sanirtech-lead-chat-forms' ); ?>
                                     </label>
+                                    
                                     <button type="button" class="button remove-field-row"><?php esc_html_e( 'Delete', 'sanirtech-lead-chat-forms' ); ?></button>
+                                    
+                                    <!-- CONFIGURATION SUB-ROW: Repositioned to the bottom to sync accurately with structural DOM tree processing layouts -->
+                                    <div class="stlcf-routing-config <?php echo ( $stlcf_cur_type !== 'agent_select' ) ? 'stlcf-hide-field' : ''; ?>">
+                                        <p class="description"><?php esc_html_e( 'Define Agents Distribution configuration map (One entry per line):', 'sanirtech-lead-chat-forms' ); ?></p>
+                                        <textarea name="stlcf_fields[<?php echo intval( $stlcf_idx ); ?>][routing]" placeholder="<?php esc_attr_e( "Format: Name|Phone (With country code, no spaces)\nExample:\nSales Team|919999999999\nSupport Desk|918888888888", 'sanirtech-lead-chat-forms' ); ?>"><?php echo esc_textarea( isset( $stlcf_fld['routing'] ) ? $stlcf_fld['routing'] : '' ); ?></textarea>
+                                    </div>
                                 </div>
                             <?php }
                         } ?>
@@ -81,6 +101,7 @@ $stlcf_dynamic_categories = $this->get_all_categories();
                 </div>
             </div>
 
+            <!-- Contextual Settings Panels (Right Sidebar Column) -->
             <div class="stlcf-builder-sidebar stlcf-card">
                 <div class="stlcf-card-body">
                     <div class="stlcf-form-group">

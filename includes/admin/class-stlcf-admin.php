@@ -9,6 +9,7 @@ class STLCF_Admin {
         add_filter( 'plugin_action_links_' . STLCF_PLUGIN_BASENAME, array( $this, 'add_plugin_action_links' ) );
         add_action( 'admin_init', array( $this, 'handle_create_form' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+        add_action( 'admin_action_stlcf_export_leads_csv', array( $this, 'process_leads_csv_streaming_export' ) );
     }
 
     public function enqueue_admin_assets( $hook ) {
@@ -123,7 +124,9 @@ class STLCF_Admin {
                     $submitted_fields[] = array(
                         'type'     => isset( $field['type'] ) ? sanitize_text_field( $field['type'] ) : 'text',
                         'label'    => isset( $field['label'] ) ? sanitize_text_field( $field['label'] ) : '',
-                        'required' => isset( $field['required'] ) ? 1 : 0
+                        'required' => isset( $field['required'] ) ? 1 : 0,
+                        // PCP SAFE: Sanitizing multi-line routing configurations parameters cleanly
+                        'routing'  => isset( $field['routing'] ) ? sanitize_textarea_field( $field['routing'] ) : ''
                     );
                 }
             }
@@ -190,4 +193,92 @@ class STLCF_Admin {
     public function render_categories_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-categories.php'; }
     public function render_entries_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-entries.php'; }
     public function render_settings_page() { require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-settings.php'; }
+
+    /**
+     * PREMIUM DATA OPERATIONS MODULE: Secure, lightning fast pipeline streamer array loop parser.
+     * Operates cleanly across low footprint limits bounds without breaking server threads execution loops.
+     */
+    public function process_leads_csv_streaming_export() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'Unauthorized security parameters access allocation denied.', 'sanirtech-lead-chat-forms' ) );
+        }
+
+        // Verify cryptographic origin authenticity nonces bounds
+        if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'stlcf_export_csv_action' ) ) {
+            wp_die( esc_html__( 'Security footprint validation mapping sequence has failed.', 'sanirtech-lead-chat-forms' ) );
+        }
+
+        global $wpdb;
+
+        $form_id_filter = isset( $_GET['form_id'] ) ? intval( wp_unslash( $_GET['form_id'] ) ) : 0;
+        
+        // Fetching structural targets segments datasets entries arrays maps
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+        if ( $form_id_filter > 0 ) {
+            $stlcf_dataset = $wpdb->get_results( $wpdb->prepare( "SELECT e.*, f.title as form_title FROM {$wpdb->prefix}stlcf_entries e LEFT JOIN {$wpdb->prefix}stlcf_forms f ON e.form_id = f.id WHERE e.form_id = %d ORDER BY e.id DESC", $form_id_filter ), ARRAY_A );
+        } else {
+            $stlcf_dataset = $wpdb->get_results( "SELECT e.*, f.title as form_title FROM {$wpdb->prefix}stlcf_entries e LEFT JOIN {$wpdb->prefix}stlcf_forms f ON e.form_id = f.id ORDER BY e.id DESC", ARRAY_A );
+        }
+        // phpcs:enable
+
+        if ( empty( $stlcf_dataset ) ) {
+            wp_die( esc_html__( 'No available lead logging rows discovered to extract datasets records.', 'sanirtech-lead-chat-forms' ) );
+        }
+
+        // Set proper browser stream download payload boundary envelopes headers directives
+        $csv_file_identity = 'stlcf_leads_export_' . current_time( 'Y-m-d_His' ) . '.csv';
+        
+        header( 'Content-Type: text/csv; charset=UTF-8' );
+        header( 'Content-Disposition: attachment; filename="' . sanitize_file_name( $csv_file_identity ) . '";' );
+        header( 'Pragma: no-cache' );
+        header( 'Expires: 0' );
+
+        // Open light tracking file mapping descriptor pointer reference stream pipeline
+        $output_stream_channel = fopen( 'php://output', 'w' );
+
+        // Fix Excel cell language UTF-8 character conversion breakage symbols mapping rules
+        fwrite( $output_stream_channel, chr(0xEF) . chr(0xBB) . chr(0xBF) );
+
+        // Establish strict standard header layouts matrix rows
+        $csv_structural_headers = array(
+            __( 'Lead System ID', 'sanirtech-lead-chat-forms' ),
+            __( 'Source Form Name', 'sanirtech-lead-chat-forms' ),
+            __( 'User Log Data Payload', 'sanirtech-lead-chat-forms' ),
+            __( 'Origin Referral URL', 'sanirtech-lead-chat-forms' ),
+            __( 'Submission Date-Time', 'sanirtech-lead-chat-forms' )
+        );
+        fputcsv( $output_stream_channel, $csv_structural_headers );
+
+        // Process loop streams array nodes entries lines cleanly row-by-row
+        foreach ( $stlcf_dataset as $lead_data_row ) {
+            $raw_serialized_fields = maybe_unserialize( $lead_data_row['form_data'] );
+            $compiled_text_inline_payload = "";
+
+            if ( is_array( $raw_serialized_fields ) ) {
+                $item_pairs = array();
+                foreach ( $raw_serialized_fields as $data_lbl => $data_val ) {
+                    $item_pairs[] = trim( $data_lbl ) . ': ' . trim( $data_val );
+                }
+                // Separate fields cleanly with visible delimiter pipelines symbols
+                $compiled_text_inline_payload = implode( ' | ', $item_pairs );
+            } else {
+                $compiled_text_inline_payload = $lead_data_row['form_data'];
+            }
+
+            $csv_sanitized_row_line = array(
+                $lead_data_row['id'],
+                ! empty( $lead_data_row['form_title'] ) ? $lead_data_row['form_title'] : __( 'Unidentified Form Source', 'sanirtech-lead-chat-forms' ),
+                $compiled_text_inline_payload,
+                $lead_data_row['page_url'],
+                $lead_data_row['submitted_at']
+            );
+
+            fputcsv( $output_stream_channel, $csv_sanitized_row_line );
+        }
+
+        fclose( $output_stream_channel );
+        exit;
+    }
 }
+

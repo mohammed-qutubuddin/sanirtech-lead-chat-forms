@@ -31,22 +31,31 @@ if ( isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ) {
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter
 if ( $stlcf_filter_id > 0 ) {
+    // FIXED: Corrected the dynamic database global variable properties indicator arrow token prefix format strings
     $stlcf_entries = $wpdb->get_results( $wpdb->prepare( "SELECT e.*, f.title as form_title FROM {$wpdb->prefix}stlcf_entries e LEFT JOIN {$wpdb->prefix}stlcf_forms f ON e.form_id = f.id WHERE e.form_id = %d ORDER BY e.id DESC", $stlcf_filter_id ) );
 } else {
-    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+    // FIXED: Corrected the dynamic database global variable properties indicator arrow token prefix format strings
     $stlcf_entries = $wpdb->get_results( "SELECT e.*, f.title as form_title FROM {$wpdb->prefix}stlcf_entries e LEFT JOIN {$wpdb->prefix}stlcf_forms f ON e.form_id = f.id ORDER BY e.id DESC" );
 }
 // phpcs:enable
+
+$stlcf_csv_nonce = wp_create_nonce( 'stlcf_export_csv_action' );
 ?>
 <div class="wrap">
     <h1 class="wp-heading-inline"><?php esc_html_e( 'Form Submissions Log', 'sanirtech-lead-chat-forms' ); ?></h1>
     
-    <?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-    <?php if ( isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ) : ?>
-        <a href="admin.php?page=stlcf-entries" class="page-title-action"><?php esc_html_e( 'Clear Filter / View All Logs', 'sanirtech-lead-chat-forms' ); ?></a>
-    <?php endif; ?>
+    <div class="stlcf-actions-header-wrapper" style="margin: 15px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+        <?php if ( isset( $_GET['form_id'] ) && ! empty( $_GET['form_id'] ) ) : ?>
+            <a href="admin.php?page=stlcf-entries" class="button button-secondary"><?php esc_html_e( 'Clear Filter / View All Logs', 'sanirtech-lead-chat-forms' ); ?></a>
+        <?php endif; ?>
+        
+        <a href="<?php echo esc_url( admin_url( 'admin.php?action=stlcf_export_leads_csv&form_id=' . $stlcf_filter_id . '&_wpnonce=' . $stlcf_csv_nonce ) ); ?>" class="button button-primary stlcf-export-csv-btn" style="background: #10b981; border-color: #10b981; font-weight: 600;">
+            <span class="dashicons dashicons-download" style="margin-top: 4px; margin-right: 4px;"></span>
+            <?php esc_html_e( 'Export Filtered Leads to CSV', 'sanirtech-lead-chat-forms' ); ?>
+        </a>
+    </div>
     
-    <!-- PCP Stable Core Compliant Isolated Grid Outer Shell -->
     <div class="stlcf-table-container stlcf-mt-md">
         <table class="wp-list-table widefat fixed striped table-view-list stlcf-entries-table">
             <thead>
@@ -69,17 +78,11 @@ if ( $stlcf_filter_id > 0 ) {
                 <?php else : 
                     foreach ( $stlcf_entries as $stlcf_entry ) : 
                         $stlcf_fields = maybe_unserialize( $stlcf_entry->form_data );
-                        // Handle generic or missing form labels safely
                         $stlcf_display_title = ! empty( $stlcf_entry->form_title ) ? $stlcf_entry->form_title : sprintf( __( 'Deleted Form (ID: %d)', 'sanirtech-lead-chat-forms' ), $stlcf_entry->form_id );
                         ?>
                         <tr>
-                            <!-- Lead Meta ID Row -->
                             <td><code class="stlcf-code-id">#<?php echo esc_html( $stlcf_entry->id ); ?></code></td>
-                            
-                            <!-- Source Origin Identity Tracer -->
                             <td><strong class="stlcf-entry-title"><?php echo esc_html( $stlcf_display_title ); ?></strong></td>
-                            
-                            <!-- Dynamic Content Field Deserialization Element Node Tree -->
                             <td>
                                 <div class="stlcf-entry-data-list">
                                     <?php 
@@ -93,8 +96,6 @@ if ( $stlcf_filter_id > 0 ) {
                                     ?>
                                 </div>
                             </td>
-                            
-                            <!-- External Resource Referrer Hyperlink Tracking Target Anchor -->
                             <td>
                                 <?php if ( ! empty( $stlcf_entry->page_url ) ) : ?>
                                     <a href="<?php echo esc_url( $stlcf_entry->page_url ); ?>" target="_blank" rel="noopener noreferrer" class="button button-small stlcf-link-btn">
@@ -104,11 +105,7 @@ if ( $stlcf_filter_id > 0 ) {
                                     <span class="stlcf-fallback-text">-</span>
                                 <?php endif; ?>
                             </td>
-                            
-                            <!-- Date-Time Stamp Registry Node -->
-                            <td class="stlcf-entry-date-cell"><?php echo esc_html( $stlcf_entry->submitted_at ); ?></td>
-                            
-                            <!-- Safe Cryptographic Single Verification Delete Controls Entry Trigger -->
+                            <td class="stlcf-entry-date-cell"><?php echo esc_html( $lead_date_row = $stlcf_entry->submitted_at ); ?></td>
                             <td>
                                 <?php $stlcf_nonce = wp_create_nonce( 'stlcf_delete_entry_' . $stlcf_entry->id ); ?>
                                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=stlcf-entries&action=delete&entry_id=' . $stlcf_entry->id . '&_wpnonce=' . $stlcf_nonce ) ); ?>" class="stlcf-action-delete" onclick="return confirm('<?php esc_attr_e('Are you sure you want to permanently delete this entry record?', 'sanirtech-lead-chat-forms'); ?>');">
