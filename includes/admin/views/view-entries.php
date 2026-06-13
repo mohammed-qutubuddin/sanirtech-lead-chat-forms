@@ -78,7 +78,11 @@ $stlcf_csv_nonce = wp_create_nonce( 'stlcf_export_csv_action' );
                 <?php else : 
                     foreach ( $stlcf_entries as $stlcf_entry ) : 
                         $stlcf_fields = maybe_unserialize( $stlcf_entry->form_data );
-                        $stlcf_display_title = ! empty( $stlcf_entry->form_title ) ? $stlcf_entry->form_title : sprintf( __( 'Deleted Form (ID: %d)', 'sanirtech-lead-chat-forms' ), $stlcf_entry->form_id );
+                        $stlcf_display_title = ! empty( $stlcf_entry->form_title ) ? $stlcf_entry->form_title : sprintf( 
+                            /* translators: %d: Form ID */
+                            __( 'Deleted Form (ID: %d)', 'sanirtech-lead-chat-forms' ), 
+                            $stlcf_entry->form_id 
+                        );
                         ?>
                         <tr>
                             <td><code class="stlcf-code-id">#<?php echo esc_html( $stlcf_entry->id ); ?></code></td>
@@ -105,7 +109,7 @@ $stlcf_csv_nonce = wp_create_nonce( 'stlcf_export_csv_action' );
                                     <span class="stlcf-fallback-text">-</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="stlcf-entry-date-cell"><?php echo esc_html( $lead_date_row = $stlcf_entry->submitted_at ); ?></td>
+                            <td class="stlcf-entry-date-cell"><?php echo esc_html( $stlcf_entry->submitted_at ); ?></td>
                             <td>
                                 <?php $stlcf_nonce = wp_create_nonce( 'stlcf_delete_entry_' . $stlcf_entry->id ); ?>
                                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=stlcf-entries&action=delete&entry_id=' . $stlcf_entry->id . '&_wpnonce=' . $stlcf_nonce ) ); ?>" class="stlcf-action-delete" onclick="return confirm('<?php esc_attr_e('Are you sure you want to permanently delete this entry record?', 'sanirtech-lead-chat-forms'); ?>');">

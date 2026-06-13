@@ -60,6 +60,7 @@ class STLCF_Frontend {
         $fb_id  = isset( $stlcf_g_settings['fb_pixel_id'] ) ? sanitize_text_field( $stlcf_g_settings['fb_pixel_id'] ) : '';
         $ga4_id = isset( $stlcf_g_settings['ga4_measurement_id'] ) ? sanitize_text_field( $stlcf_g_settings['ga4_measurement_id'] ) : '';
 
+        // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedScript
         if ( ! empty( $fb_id ) ) {
             ?>
             <script>
@@ -86,6 +87,7 @@ class STLCF_Frontend {
             </script>
             <?php
         }
+        // phpcs:enable
     }
 
     public function render_floating_widget() {
@@ -262,7 +264,11 @@ class STLCF_Frontend {
                     ?>
                     <div style="margin-bottom:12px;">
                         <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9em;">
-                            <?php echo esc_html( sprintf( __( 'Spam Protection: What is %1$d + %2$d? *', 'sanirtech-lead-chat-forms' ), $stlcf_n1, $stlcf_n2 ) ); ?>
+                            <?php echo esc_html( sprintf( 
+                                /* translators: 1: First math number, 2: Second math number */
+                                __( 'Spam Protection: What is %1$d + %2$d? *', 'sanirtech-lead-chat-forms' ), 
+                                $stlcf_n1, $stlcf_n2 
+                            ) ); ?>
                         </label>
                         <input type="hidden" name="stlcf_captcha_hash" value="<?php echo esc_attr( $stlcf_c_hash ); ?>">
                         <input type="number" name="stlcf_captcha_ans" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px; box-sizing:border-box; height:38px;" required>
@@ -361,6 +367,7 @@ class STLCF_Frontend {
             }
         }
 
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Inputs are sanitized securely inside the subsequent foreach loop below.
         $stlcf_raw_inputs = wp_unslash( $_POST['stlcf_input'] );
         $stlcf_sanitized = array();
         $stlcf_dynamic_agent_phone = '';

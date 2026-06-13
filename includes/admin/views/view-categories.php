@@ -25,8 +25,8 @@ $stlcf_raw_counts = $wpdb->get_results( "SELECT category, COUNT(*) as count FROM
 // phpcs:enable
 
 if ( is_array( $stlcf_raw_counts ) ) {
-    foreach ( $stlcf_raw_counts as $row ) {
-        $stlcf_cat_counts[ $row['category'] ] = intval( $row['count'] );
+    foreach ( $stlcf_raw_counts as $$stlcf_row ) {
+        $stlcf_cat_counts[ $stlcf_row['category'] ] = intval( $stlcf_row['count'] );
     }
 }
 

@@ -147,7 +147,15 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                     <tr class="stlcf-gdpr-conditional-row">
                         <th scope="row"><label><?php esc_html_e( 'Target Privacy Page Anchor', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
-                            <?php wp_dropdown_pages( array( 'name' => 'stlcf_general_settings[gdpr_privacy_page]', 'selected' => $stlcf_gdpr_page, 'show_option_none' => __( '-- Select Page Core Directory --', 'sanirtech-lead-chat-forms' ), 'class' => 'stlcf-captcha-select regular-text' ) ); ?>
+                            <?php 
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            wp_dropdown_pages( array( 
+                                'name'             => 'stlcf_general_settings[gdpr_privacy_page]', 
+                                'selected'         => intval( $stlcf_gdpr_page ), 
+                                'show_option_none' => esc_html__( '-- Select Page Core Directory --', 'sanirtech-lead-chat-forms' ), 
+                                'class'            => 'stlcf-captcha-select regular-text' 
+                            ) ); 
+                            ?>
                         </td>
                     </tr>
                 </table>

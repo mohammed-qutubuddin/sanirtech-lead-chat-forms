@@ -13,8 +13,8 @@ $stlcf_raw_counts = $wpdb->get_results( "SELECT form_id, COUNT(*) as count FROM 
 // phpcs:enable
 
 if ( is_array( $stlcf_raw_counts ) ) {
-    foreach ( $stlcf_raw_counts as $row ) {
-        $stlcf_entry_counts[ intval( $row['form_id'] ) ] = intval( $row['count'] );
+    foreach ( $stlcf_raw_counts as $stlcf_row ) {
+        $stlcf_entry_counts[ intval( $stlcf_row['form_id'] ) ] = intval( $stlcf_row['count'] );
     }
 }
 

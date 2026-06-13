@@ -235,9 +235,11 @@ class STLCF_Admin {
         header( 'Expires: 0' );
 
         // Open light tracking file mapping descriptor pointer reference stream pipeline
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Required for performance safe memory output streaming
         $output_stream_channel = fopen( 'php://output', 'w' );
 
-        // Fix Excel cell language UTF-8 character conversion breakage symbols mapping rules
+        // Fix Excel cell language UTF-8 character conversion breakage symbols
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- Writing stream buffer directly
         fwrite( $output_stream_channel, chr(0xEF) . chr(0xBB) . chr(0xBF) );
 
         // Establish strict standard header layouts matrix rows
@@ -277,6 +279,7 @@ class STLCF_Admin {
             fputcsv( $output_stream_channel, $csv_sanitized_row_line );
         }
 
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing active stream buffer
         fclose( $output_stream_channel );
         exit;
     }

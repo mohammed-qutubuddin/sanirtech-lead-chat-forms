@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Securely capture highly qualified leads locally before routing them to instant messaging channels or processing via email. 100% Cache-Proof and SEO optimized.
+Securely capture leads locally before routing to instant messaging or email. 100% Cache-Proof, offline hours, and SEO optimized.
 
 == Description ==
 
