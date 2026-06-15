@@ -405,6 +405,42 @@ class STLCF_Frontend {
             }
         }
 
+        // ======================================================================
+        // 🚀 ENTERPRISE WEBHOOK DISPATCHER (ZAPIER / MAKE / PABBLY)
+        // ======================================================================
+        $stlcf_webhook_enabled = isset( $stlcf_g_settings['enable_webhook'] ) ? $stlcf_g_settings['enable_webhook'] : '0';
+        $stlcf_webhook_url     = isset( $stlcf_g_settings['webhook_url'] ) ? esc_url_raw( $stlcf_g_settings['webhook_url'] ) : '';
+
+        if ( $stlcf_webhook_enabled === '1' && ! empty( $stlcf_webhook_url ) ) {
+            
+            // Build a clean, structured JSON payload for external CRMs
+            $stlcf_webhook_payload = array(
+                'event'        => 'new_lead_submission',
+                'timestamp'    => current_time( 'mysql' ),
+                'form_id'      => $stlcf_form_id,
+                'source_url'   => $stlcf_pg_url,
+                'channel'      => $stlcf_s_mod, // whatsapp or email
+                'user_data'    => $stlcf_sanitized,
+                'tracking'     => $stlcf_tracking_payload
+            );
+
+            // Dispatch HTTP request asynchronously (blocking => false) 
+            // This guarantees the user doesn't wait for Zapier's server response
+            wp_remote_post( $stlcf_webhook_url, array(
+                'method'      => 'POST',
+                'timeout'     => 5,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'blocking'    => false, // Crucial for frontend performance!
+                'headers'     => array(
+                    'Content-Type' => 'application/json; charset=utf-8'
+                ),
+                'body'        => wp_json_encode( $stlcf_webhook_payload ),
+                'cookies'     => array()
+            ));
+        }
+        // ======================================================================
+
         global $wpdb;
         $stlcf_sv_db  = isset( $stlcf_g_settings['save_to_db'] ) ? $stlcf_g_settings['save_to_db'] : '1';
         if ( $stlcf_sv_db === '1' ) {

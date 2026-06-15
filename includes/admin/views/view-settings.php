@@ -82,6 +82,7 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
         <a href="#widget" class="nav-tab stlcf-nav-tab" data-tab="stlcf-tab-widget"><?php esc_html_e( 'Floating Widget', 'sanirtech-lead-chat-forms' ); ?></a>
         <a href="#analytics" class="nav-tab stlcf-nav-tab" data-tab="stlcf-tab-analytics"><?php esc_html_e( 'Analytics & Pixels', 'sanirtech-lead-chat-forms' ); ?></a>
         <a href="#security" class="nav-tab stlcf-nav-tab stlcf-nav-tab-security" data-tab="stlcf-tab-security"><?php esc_html_e( 'Spam Security', 'sanirtech-lead-chat-forms' ); ?></a>
+        <a href="#webhooks" class="nav-tab stlcf-nav-tab" data-tab="stlcf-tab-webhooks"><?php esc_html_e( 'Webhooks & Zapier', 'sanirtech-lead-chat-forms' ); ?></a>
     </nav>
 
     <form method="post" action="options.php">
@@ -474,6 +475,40 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                         <td><input type="text" name="stlcf_general_settings[recaptcha_v3_secret_key]" value="<?php echo esc_attr( $stlcf_r3_sec ); ?>" class="regular-text"></td>
                     </tr>
                 </table>
+            </div>
+        </div>
+
+        <?php
+        // Fetch Webhook Defaults
+        $stlcf_wh_en  = isset( $stlcf_options['enable_webhook'] ) ? $stlcf_options['enable_webhook'] : '0';
+        $stlcf_wh_url = isset( $stlcf_options['webhook_url'] ) ? $stlcf_options['webhook_url'] : '';
+        ?>
+        <div id="stlcf-tab-webhooks" class="stlcf-tab-section stlcf-card stlcf-hide-tab">
+            <div class="stlcf-card-header"><h2><?php esc_html_e( 'Webhooks & CRM Push Integration', 'sanirtech-lead-chat-forms' ); ?></h2></div>
+            <div class="inside stlcf-card-body">
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label><?php esc_html_e( 'Enable Outbound Webhooks', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <input type="hidden" name="stlcf_general_settings[enable_webhook]" value="0">
+                                <input type="checkbox" id="stlcf_enable_webhook" name="stlcf_general_settings[enable_webhook]" value="1" <?php checked( $stlcf_wh_en, '1' ); ?>>
+                                <?php esc_html_e( 'Automatically push form submission payload data to a custom Webhook URL (Zapier, Make, Pabbly, etc.) in real-time.', 'sanirtech-lead-chat-forms' ); ?>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-webhook-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Destination Webhook URL', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <input type="url" name="stlcf_general_settings[webhook_url]" value="<?php echo esc_url( $stlcf_wh_url ); ?>" class="large-text" placeholder="https://hooks.zapier.com/hooks/catch/...">
+                            <p class="description"><?php esc_html_e( 'The JSON payload will be dispatched asynchronously via a POST request to prevent frontend delays.', 'sanirtech-lead-chat-forms' ); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <div class="stlcf-doc-notice-box stlcf-webhook-conditional-row">
+                    <h4><?php esc_html_e( '⚡ Payload Structure', 'sanirtech-lead-chat-forms' ); ?></h4>
+                    <p><?php esc_html_e( 'The system sends a structured JSON array containing the Form ID, Source URL, Context Data, and all sanitized User Input fields directly to your endpoint.', 'sanirtech-lead-chat-forms' ); ?></p>
+                </div>
             </div>
         </div>
 

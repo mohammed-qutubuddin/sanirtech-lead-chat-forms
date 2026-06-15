@@ -117,7 +117,7 @@ You can write the dynamic shortcodes tokens `[Your Name]` (which parses the corr
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.1 (15 June 2026) =
 * **Feature:** Migrated to a 100% Cache-Proof AJAX form submission engine for seamless compatibility with WP Rocket and Cloudflare.
 * **Feature:** Added Multi-Agent Smart Routing via configurable dropdown department selection.
 * **Feature:** Introduced Business Operating Hours with automated offline actions (hide widget, force email routing, or show alert banner).

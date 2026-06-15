@@ -223,4 +223,17 @@ jQuery(document).ready(function($) {
             $btn.css('background-color', originalBackground);
         }, 1500);
     }
+
+    // G. Webhooks Customizer Toggle
+    var webhookToggle = $('#stlcf_enable_webhook');
+    function computeWebhookVisibility() {
+        if (webhookToggle.is(':checked')) {
+            $('.stlcf-webhook-conditional-row').fadeIn(150);
+        } else {
+            $('.stlcf-webhook-conditional-row').hide();
+        }
+    }
+    if (webhookToggle.length > 0) {
+        webhookToggle.on('change', computeWebhookVisibility);
+    }
 });
