@@ -70,6 +70,9 @@ $stlcf_dashboard_en = isset( $stlcf_options['enable_analytics_dashboard'] ) ? $s
 $stlcf_gdpr_cron = isset( $stlcf_options['enable_gdpr_cron'] ) ? $stlcf_options['enable_gdpr_cron'] : '0';
 $stlcf_gdpr_days = isset( $stlcf_options['gdpr_retention_days'] ) ? $stlcf_options['gdpr_retention_days'] : '30';
 
+$stlcf_fw_exit  = isset( $stlcf_options['fw_exit_intent'] ) ? $stlcf_options['fw_exit_intent'] : '0';
+$stlcf_fw_delay = isset( $stlcf_options['fw_time_delay'] ) ? $stlcf_options['fw_time_delay'] : '0';
+
 if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
 ?>
 
@@ -323,6 +326,22 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                                 <input type="checkbox" id="stlcf_enable_business_hours" name="stlcf_general_settings[enable_business_hours]" value="1" <?php checked( $stlcf_hours_enabled, '1' ); ?>>
                                 <?php esc_html_e( 'Restrict chat submissions and floating widgets visibility to selective business windows.', 'sanirtech-lead-chat-forms' ); ?>
                             </label>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-widget-conditional-row" style="border-top: 1px solid #f1f5f9;">
+                        <th scope="row"><label><?php esc_html_e( 'Exit-Intent Trigger', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <input type="hidden" name="stlcf_general_settings[fw_exit_intent]" value="0">
+                                <input type="checkbox" name="stlcf_general_settings[fw_exit_intent]" value="1" <?php checked( $stlcf_fw_exit, '1' ); ?>>
+                                <?php esc_html_e( 'Grab attention when the user\'s mouse moves out of the viewport (indicating they are about to leave).', 'sanirtech-lead-chat-forms' ); ?>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-widget-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Time-Delay Trigger', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <input type="number" name="stlcf_general_settings[fw_time_delay]" value="<?php echo esc_attr( $stlcf_fw_delay ); ?>" class="small-text" min="0" step="1"> <span class="description"><?php esc_html_e( 'seconds. (Set to 0 to disable time delay). Trigger the widget attention animation after X seconds.', 'sanirtech-lead-chat-forms' ); ?></span>
                         </td>
                     </tr>
                     <tr class="stlcf-hours-conditional-row">

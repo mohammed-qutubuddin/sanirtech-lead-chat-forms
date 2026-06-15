@@ -134,4 +134,62 @@ jQuery(document).ready(function($) {
             });
         });
     }
+
+    // ==========================================================================
+    // 4. SMART WIDGET TRIGGERS (EXIT-INTENT & TIME-DELAY)
+    // ==========================================================================
+    if (typeof stlcf_ajax_object !== 'undefined' && stlcf_ajax_object.fw_enabled === '1') {
+        
+        // Inject a dynamic bounce animation stylesheet natively
+        $('<style>')
+            .prop('type', 'text/css')
+            .html(`
+                @keyframes stlcfAttentionBounce {
+                    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+                    40% { transform: translateY(-20px); }
+                    60% { transform: translateY(-10px); }
+                }
+                .stlcf-trigger-bounce {
+                    animation: stlcfAttentionBounce 1.5s ease;
+                }
+            `)
+            .appendTo('head');
+
+        let isWidgetTriggered = false;
+
+        // Function to grab user's attention
+        const triggerWidgetAttention = function() {
+            if (isWidgetTriggered) return;
+            isWidgetTriggered = true; // Ensure it only fires once per session
+
+            // Assuming your widget wrapper has a class '.stlcf-floating-widget'
+            // We apply the bounce class, and optionally force-show the tooltip
+            const $widgetWrapper = $('.stlcf-floating-widget, .stlcf-fw-container'); 
+            
+            if ($widgetWrapper.length > 0) {
+                $widgetWrapper.addClass('stlcf-trigger-bounce');
+                
+                // Remove the class after animation completes so it resets cleanly
+                setTimeout(function() {
+                    $widgetWrapper.removeClass('stlcf-trigger-bounce');
+                }, 1500);
+            }
+        };
+
+        // Trigger 1: Mouse leaves the top of the browser window (Exit-Intent)
+        if (stlcf_ajax_object.fw_exit_intent === '1') {
+            $(document).on('mouseleave', function(e) {
+                // If clientY is less than 0, they moved mouse to URL bar/tabs
+                if (e.clientY < 0) { 
+                    triggerWidgetAttention();
+                }
+            });
+        }
+
+        // Trigger 2: Time Delay
+        const delaySeconds = parseInt(stlcf_ajax_object.fw_time_delay, 10);
+        if (delaySeconds > 0) {
+            setTimeout(triggerWidgetAttention, delaySeconds * 1000);
+        }
+    }
 });

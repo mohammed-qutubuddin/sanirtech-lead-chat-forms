@@ -29,11 +29,16 @@ class STLCF_Frontend {
 
         $stlcf_g_settings = get_option( 'stlcf_general_settings', array() );
         
+        // Pass essential variables to our JavaScript engine
         wp_localize_script( 'stlcf-public-script', 'stlcf_ajax_object', array(
-            'ajax_url'          => admin_url( 'admin-ajax.php' ),
-            'tracking_enabled'  => isset( $stlcf_g_settings['enable_pixels_tracking'] ) ? sanitize_text_field( $stlcf_g_settings['enable_pixels_tracking'] ) : '0',
-            'fb_pixel_event'    => isset( $stlcf_g_settings['fb_pixel_event'] ) ? sanitize_text_field( $stlcf_g_settings['fb_pixel_event'] ) : 'Lead',
-            'ga4_id'            => isset( $stlcf_g_settings['ga4_measurement_id'] ) ? sanitize_text_field( $stlcf_g_settings['ga4_measurement_id'] ) : ''
+            'ajax_url'         => admin_url( 'admin-ajax.php' ),
+            'tracking_enabled' => isset( $stlcf_g_settings['enable_pixels_tracking'] ) ? sanitize_text_field( $stlcf_g_settings['enable_pixels_tracking'] ) : '0',
+            'fb_pixel_event'   => isset( $stlcf_g_settings['fb_pixel_event'] ) ? sanitize_text_field( $stlcf_g_settings['fb_pixel_event'] ) : 'Lead',
+            'ga4_id'           => isset( $stlcf_g_settings['ga4_measurement_id'] ) ? sanitize_text_field( $stlcf_g_settings['ga4_measurement_id'] ) : '',
+            // New Smart Triggers Data
+            'fw_enabled'       => isset( $stlcf_g_settings['floating_btn'] ) ? $stlcf_g_settings['floating_btn'] : '0',
+            'fw_exit_intent'   => isset( $stlcf_g_settings['fw_exit_intent'] ) ? $stlcf_g_settings['fw_exit_intent'] : '0',
+            'fw_time_delay'    => isset( $stlcf_g_settings['fw_time_delay'] ) ? intval( $stlcf_g_settings['fw_time_delay'] ) : 0
         ) );
 
         // Enqueue Smart Country Code Library if enabled
@@ -129,7 +134,7 @@ class STLCF_Frontend {
         $stlcf_geom_pos = ( $stlcf_fw_pos === 'left' ) ? 'left:30px;' : 'right:30px;';
         $stlcf_tooltip_geom = ( $stlcf_fw_pos === 'left' ) ? 'left: 70px;' : 'right: 70px;';
         ?>
-        <div class="stlcf-floating-container" style="position:fixed; bottom:30px; <?php echo esc_attr( $stlcf_geom_pos ); ?> z-index:999999; display:flex; align-items:center;">
+        <div class="stlcf-floating-container stlcf-floating-widget" style="position:fixed; bottom:30px; <?php echo esc_attr( $stlcf_geom_pos ); ?> z-index:999999; display:flex; align-items:center;">
             <?php if ( ! empty( $stlcf_fw_txt ) ) : ?>
                 <div class="stlcf-fw-tooltip" style="position:absolute; bottom:15px; <?php echo esc_attr( $stlcf_tooltip_geom ); ?> background:#1e293b; color:#fff; padding:6px 12px; border-radius:4px; font-size:12px; font-weight:500; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.15); pointer-events:none; font-family: inherit;">
                     <?php echo esc_html( $stlcf_fw_txt ); ?>
@@ -151,7 +156,6 @@ class STLCF_Frontend {
         if ( empty( $stlcf_form_id ) ) { return ''; }
 
         global $wpdb;
-        // FIXED: Corrected the dynamic database indicator arrow token prefix format strings
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
         $stlcf_form_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}stlcf_forms WHERE id = %d", $stlcf_form_id ) );
@@ -433,6 +437,7 @@ class STLCF_Frontend {
         // ======================================================================
         $stlcf_webhook_enabled = isset( $stlcf_g_settings['enable_webhook'] ) ? $stlcf_g_settings['enable_webhook'] : '0';
         $stlcf_webhook_url     = isset( $stlcf_g_settings['webhook_url'] ) ? esc_url_raw( $stlcf_g_settings['webhook_url'] ) : '';
+        $stlcf_s_mod = isset( $_POST['stlcf_submit_channel'] ) ? sanitize_key( wp_unslash( $_POST['stlcf_submit_channel'] ) ) : 'whatsapp';
 
         if ( $stlcf_webhook_enabled === '1' && ! empty( $stlcf_webhook_url ) ) {
             
@@ -490,7 +495,6 @@ class STLCF_Frontend {
             }
         }
 
-        $stlcf_s_mod = isset( $_POST['stlcf_submit_channel'] ) ? sanitize_key( wp_unslash( $_POST['stlcf_submit_channel'] ) ) : 'whatsapp';
         $stlcf_offline_action = isset( $stlcf_g_settings['offline_action'] ) ? $stlcf_g_settings['offline_action'] : 'show_notice';
 
         if ( $this->is_currently_offline() && $stlcf_offline_action === 'email_only' ) {
