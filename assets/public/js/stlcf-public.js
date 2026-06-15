@@ -108,4 +108,30 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // 3. SMART COUNTRY CODE AUTO-DETECT (Geolocation API)
+    if (typeof intlTelInput !== 'undefined' && $('.stlcf-smart-phone').length > 0) {
+        $('.stlcf-smart-phone').each(function() {
+            var phoneInputNode = this;
+            
+            intlTelInput(phoneInputNode, {
+                initialCountry: "auto",
+                geoIpLookup: function(success, failure) {
+                    $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                        var countryCode = (resp && resp.country) ? resp.country : "us";
+                        success(countryCode);
+                    });
+                },
+                nationalMode: false, // Forces the input to show the full international code (e.g., +91)
+                autoPlaceholder: "polite",
+                utilsScript: typeof stlcf_iti_config !== 'undefined' ? stlcf_iti_config.utils_url : ""
+            });
+
+            // Minor CSS adjustment to prevent layout breaking with the new flag overlay
+            $(phoneInputNode).css({
+                'padding-left': '52px', // Make room for the flag
+                'height': '38px'
+            });
+        });
+    }
 });

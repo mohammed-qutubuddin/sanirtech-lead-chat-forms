@@ -103,6 +103,17 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                             <p class="description"><?php esc_html_e( 'Default phone number (with country code, no spaces) for widgets and fallbacks.', 'sanirtech-lead-chat-forms' ); ?></p>
                         </td>
                     </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <th scope="row"><label><?php esc_html_e( 'Smart Country Code (Geo-IP)', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <?php $stlcf_geo_ip = isset( $stlcf_options['enable_geo_phone'] ) ? $stlcf_options['enable_geo_phone'] : '1'; ?>
+                                <input type="hidden" name="stlcf_general_settings[enable_geo_phone]" value="0">
+                                <input type="checkbox" name="stlcf_general_settings[enable_geo_phone]" value="1" <?php checked( $stlcf_geo_ip, '1' ); ?>>
+                                <strong><?php esc_html_e( 'Auto-detect user location and prepend the correct country dial code to phone fields.', 'sanirtech-lead-chat-forms' ); ?></strong>
+                            </label>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label><?php esc_html_e( 'Local Leads Storage', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>

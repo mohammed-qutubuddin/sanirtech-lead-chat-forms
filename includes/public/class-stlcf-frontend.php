@@ -36,6 +36,18 @@ class STLCF_Frontend {
             'ga4_id'            => isset( $stlcf_g_settings['ga4_measurement_id'] ) ? sanitize_text_field( $stlcf_g_settings['ga4_measurement_id'] ) : ''
         ) );
 
+        // Enqueue Smart Country Code Library if enabled
+        $stlcf_geo_enabled = isset( $stlcf_g_settings['enable_geo_phone'] ) ? $stlcf_g_settings['enable_geo_phone'] : '1';
+        if ( $stlcf_geo_enabled === '1' ) {
+            wp_enqueue_style( 'intl-tel-input', 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css', array(), '17.0.8' );
+            wp_enqueue_script( 'intl-tel-input', 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js', array( 'jquery' ), '17.0.8', true );
+            
+            // Pass the utils script URL to our local JS object for formatting
+            wp_localize_script( 'stlcf-public-script', 'stlcf_iti_config', array(
+                'utils_url' => 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js'
+            ));
+        }
+
         $stlcf_c_type = isset( $stlcf_g_settings['captcha_type'] ) ? $stlcf_g_settings['captcha_type'] : 'none';
         if ( $stlcf_c_type === 'turnstile' ) {
             // phpcs:ignore PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent, WordPress.WP.EnqueuedResourceParameters.MissingVersion
@@ -249,9 +261,20 @@ class STLCF_Frontend {
                                     ?>
                                 </select>
                             <?php else : 
-                                $stlcf_i_type = ( isset( $stlcf_field['type'] ) && in_array( $stlcf_field['type'], array( 'text', 'email', 'number' ) ) ) ? $stlcf_field['type'] : 'text';
-                                ?>
-                                <input type="<?php echo esc_attr( $stlcf_i_type ); ?>" id="<?php echo esc_attr( $stlcf_f_id ); ?>" name="stlcf_input[<?php echo esc_attr( $stlcf_field['label'] ); ?>]" style="width:100%; padding:8px; border:1px solid #cbd5e0; border-radius:4px; box-sizing:border-box; height:38px;" <?php echo $stlcf_f_req ? 'required' : ''; ?>>
+                                // ==========================================
+                                // SMART PHONE DETECTION LOGIC
+                                // ==========================================
+                                $stlcf_lbl_lower = strtolower( $stlcf_field['label'] );
+                                
+                                // Check if the label contains phone-related keywords OR if the admin selected "Number" type
+                                $stlcf_is_phone = ( strpos( $stlcf_lbl_lower, 'phone' ) !== false || strpos( $stlcf_lbl_lower, 'mobile' ) !== false || strpos( $stlcf_lbl_lower, 'whatsapp' ) !== false || ( isset($stlcf_field['type']) && $stlcf_field['type'] === 'number' ) );
+                                
+                                // Dynamically assign input type and our special JS tracking class
+                                $stlcf_i_type  = $stlcf_is_phone ? 'tel' : ( ( isset( $stlcf_field['type'] ) && in_array( $stlcf_field['type'], array( 'text', 'email', 'number' ) ) ) ? $stlcf_field['type'] : 'text' );
+                                $stlcf_p_class = $stlcf_is_phone ? 'stlcf-smart-phone' : '';
+                                // ==========================================
+                            ?>
+                                <input type="<?php echo esc_attr( $stlcf_i_type ); ?>" class="<?php echo esc_attr( $stlcf_p_class ); ?>" id="<?php echo esc_attr( $stlcf_f_id ); ?>" name="stlcf_input[<?php echo esc_attr( $stlcf_field['label'] ); ?>]" style="width:100%; padding:8px; border:1px solid #cbd5e0; border-radius:4px; box-sizing:border-box; height:38px;" <?php echo $stlcf_f_req ? 'required' : ''; ?>>
                             <?php endif; ?>
                         </div>
                         <?php
