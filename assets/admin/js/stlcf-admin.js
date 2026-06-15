@@ -236,4 +236,18 @@ jQuery(document).ready(function($) {
     if (webhookToggle.length > 0) {
         webhookToggle.on('change', computeWebhookVisibility);
     }
+
+    // GDPR Cron Settings Controller
+    var gdprCronToggle = $('#stlcf_enable_gdpr_cron');
+    function computeGdprCronVisibility() {
+        if (gdprCronToggle.is(':checked')) {
+            $('.stlcf-gdpr-cron-conditional-row').fadeIn(150);
+        } else {
+            $('.stlcf-gdpr-cron-conditional-row').hide();
+        }
+    }
+    if (gdprCronToggle.length > 0) {
+        gdprCronToggle.on('change', computeGdprCronVisibility);
+        computeGdprCronVisibility(); // Execute on load
+    }
 });

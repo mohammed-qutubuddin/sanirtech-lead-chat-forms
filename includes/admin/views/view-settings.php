@@ -67,6 +67,9 @@ $stlcf_fw_msg       = isset( $stlcf_options['fw_prefilled_msg'] ) ? $stlcf_optio
 $stlcf_fw_vis       = isset( $stlcf_options['fw_visibility'] ) ? $stlcf_options['fw_visibility'] : 'sitewide';
 $stlcf_dashboard_en = isset( $stlcf_options['enable_analytics_dashboard'] ) ? $stlcf_options['enable_analytics_dashboard'] : '1';
 
+$stlcf_gdpr_cron = isset( $stlcf_options['enable_gdpr_cron'] ) ? $stlcf_options['enable_gdpr_cron'] : '0';
+$stlcf_gdpr_days = isset( $stlcf_options['gdpr_retention_days'] ) ? $stlcf_options['gdpr_retention_days'] : '30';
+
 if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
 ?>
 
@@ -138,6 +141,28 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
                                 <input type="checkbox" id="stlcf_enable_gdpr" name="stlcf_general_settings[enable_gdpr]" value="1" <?php checked( $stlcf_gdpr_en, '1' ); ?>>
                                 <?php esc_html_e( 'Enforce an obligatory consent validation checkbox above submission buttons layout.', 'sanirtech-lead-chat-forms' ); ?>
                             </label>
+                        </td>
+                    </tr>
+                    <tr style="border-top: 1px solid #f1f5f9;">
+                        <th scope="row"><label><?php esc_html_e( 'Automated Data Retention (Cron)', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <input type="hidden" name="stlcf_general_settings[enable_gdpr_cron]" value="0">
+                                <input type="checkbox" id="stlcf_enable_gdpr_cron" name="stlcf_general_settings[enable_gdpr_cron]" value="1" <?php checked( $stlcf_gdpr_cron, '1' ); ?>>
+                                <strong><?php esc_html_e( 'Automatically delete old leads from the database to comply with GDPR data minimization laws.', 'sanirtech-lead-chat-forms' ); ?></strong>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="stlcf-gdpr-cron-conditional-row">
+                        <th scope="row"><label><?php esc_html_e( 'Data Retention Period', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <select name="stlcf_general_settings[gdpr_retention_days]" class="stlcf-captcha-select">
+                                <option value="15" <?php selected( $stlcf_gdpr_days, '15' ); ?>><?php esc_html_e( 'Delete leads older than 15 Days', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="30" <?php selected( $stlcf_gdpr_days, '30' ); ?>><?php esc_html_e( 'Delete leads older than 30 Days (Standard)', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="60" <?php selected( $stlcf_gdpr_days, '60' ); ?>><?php esc_html_e( 'Delete leads older than 60 Days', 'sanirtech-lead-chat-forms' ); ?></option>
+                                <option value="90" <?php selected( $stlcf_gdpr_days, '90' ); ?>><?php esc_html_e( 'Delete leads older than 90 Days', 'sanirtech-lead-chat-forms' ); ?></option>
+                            </select>
+                            <p class="description"><?php esc_html_e( 'A background WordPress Cron Job will execute daily to permanently erase expired records.', 'sanirtech-lead-chat-forms' ); ?></p>
                         </td>
                     </tr>
                     <tr class="stlcf-gdpr-conditional-row">
