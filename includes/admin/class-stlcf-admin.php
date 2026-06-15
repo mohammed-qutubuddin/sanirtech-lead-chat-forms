@@ -10,6 +10,9 @@ class STLCF_Admin {
         add_action( 'admin_init', array( $this, 'handle_create_form' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
         add_action( 'admin_action_stlcf_export_leads_csv', array( $this, 'process_leads_csv_streaming_export' ) );
+        if ( isset( $_GET['page'] ) && sanitize_key( wp_unslash( $_GET['page'] ) ) === 'stlcf-analytics' ) {
+            wp_enqueue_script( 'stlcf-chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '3.9.1', true );
+        }
     }
 
     public function enqueue_admin_assets( $hook ) {
@@ -41,6 +44,15 @@ class STLCF_Admin {
             STLCF_VERSION, 
             true 
         );
+
+        $stlcf_g_settings = get_option( 'stlcf_general_settings', array() );
+        $stlcf_dashboard_en = isset( $stlcf_g_settings['enable_analytics_dashboard'] ) ? $stlcf_g_settings['enable_analytics_dashboard'] : '1';
+
+        // Load Chart.js natively ONLY on the Analytics dashboard AND if the feature is enabled
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( $stlcf_dashboard_en === '1' && isset( $_GET['page'] ) && sanitize_key( wp_unslash( $_GET['page'] ) ) === 'stlcf-analytics' ) {
+            wp_enqueue_script( 'stlcf-chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '3.9.1', true );
+        }
     }
 
     public function get_all_categories() {
@@ -65,6 +77,20 @@ class STLCF_Admin {
         add_submenu_page( 'stlcf-forms', esc_html__( 'Form Categories', 'sanirtech-lead-chat-forms' ), esc_html__( 'Categories', 'sanirtech-lead-chat-forms' ), 'manage_options', 'stlcf-categories', array( $this, 'render_categories_page' ) );
         add_submenu_page( 'stlcf-forms', esc_html__( 'Form Entries', 'sanirtech-lead-chat-forms' ), esc_html__( 'Entries', 'sanirtech-lead-chat-forms' ), 'manage_options', 'stlcf-entries', array( $this, 'render_entries_page' ) );
         add_submenu_page( 'stlcf-forms', esc_html__( 'General Settings', 'sanirtech-lead-chat-forms' ), esc_html__( 'Settings', 'sanirtech-lead-chat-forms' ), 'manage_options', 'stlcf-settings', array( $this, 'render_settings_page' ) );
+        $stlcf_g_settings = get_option( 'stlcf_general_settings', array() );
+        $stlcf_dashboard_en = isset( $stlcf_g_settings['enable_analytics_dashboard'] ) ? $stlcf_g_settings['enable_analytics_dashboard'] : '1';
+
+        // Only register the menu if the dashboard is enabled in settings
+        if ( $stlcf_dashboard_en === '1' ) {
+            add_submenu_page(
+                'stlcf-forms',
+                __( 'Analytics Dashboard', 'sanirtech-lead-chat-forms' ),
+                __( 'Analytics', 'sanirtech-lead-chat-forms' ),
+                'manage_options',
+                'stlcf-analytics',
+                array( $this, 'render_analytics_page' )
+            );
+        }
     }
 
     public function register_general_settings() {
@@ -282,6 +308,10 @@ class STLCF_Admin {
         // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing active stream buffer
         fclose( $output_stream_channel );
         exit;
+    }
+
+    public function render_analytics_page() {
+        require_once STLCF_PLUGIN_DIR . 'includes/admin/views/view-analytics.php';
     }
 }
 

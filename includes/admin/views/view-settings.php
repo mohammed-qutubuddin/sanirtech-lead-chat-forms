@@ -65,6 +65,7 @@ $stlcf_fw_tooltip   = isset( $stlcf_options['fw_tooltip_text'] ) ? $stlcf_option
 $stlcf_fw_pos       = isset( $stlcf_options['fw_position'] ) ? $stlcf_options['fw_position'] : 'right';
 $stlcf_fw_msg       = isset( $stlcf_options['fw_prefilled_msg'] ) ? $stlcf_options['fw_prefilled_msg'] : '';
 $stlcf_fw_vis       = isset( $stlcf_options['fw_visibility'] ) ? $stlcf_options['fw_visibility'] : 'sitewide';
+$stlcf_dashboard_en = isset( $stlcf_options['enable_analytics_dashboard'] ) ? $stlcf_options['enable_analytics_dashboard'] : '1';
 
 if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
 ?>
@@ -393,6 +394,16 @@ if ( empty( $stlcf_hours_tz ) ) { $stlcf_hours_tz = 'UTC'; }
             <div class="stlcf-card-header"><h2><?php esc_html_e( 'Conversion Analytics & Pixel Integrations', 'sanirtech-lead-chat-forms' ); ?></h2></div>
             <div class="inside stlcf-card-body">
                 <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label><?php esc_html_e( 'Enable Analytics Dashboard', 'sanirtech-lead-chat-forms' ); ?></label></th>
+                        <td>
+                            <label>
+                                <input type="hidden" name="stlcf_general_settings[enable_analytics_dashboard]" value="0">
+                                <input type="checkbox" name="stlcf_general_settings[enable_analytics_dashboard]" value="1" <?php checked( $stlcf_dashboard_en, '1' ); ?>>
+                                <strong><?php esc_html_e( 'Show the interactive Analytics menu to track lead conversions and form performance.', 'sanirtech-lead-chat-forms' ); ?></strong>
+                            </label>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row"><label><?php esc_html_e( 'Asynchronous Event Tracking', 'sanirtech-lead-chat-forms' ); ?></label></th>
                         <td>
