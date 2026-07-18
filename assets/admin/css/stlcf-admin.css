@@ -10,6 +10,42 @@
     padding: 0 16px;
 }
 
+.wrap, 
+.wrap h1,
+.wrap h2,
+.wrap h3,
+.wrap h4,
+.wrap p,
+.wrap label,
+.wrap td,
+.wrap th,
+.wrap a:not(.dashicons),
+.wrap span:not(.dashicons),
+.wrap input,
+.wrap select,
+.wrap textarea,
+.wrap button:not(.dashicons),
+.wrap strong,
+.wrap b,
+strong,
+b {
+    font-family: "Segoe UI", Arial, sans-serif !important;
+}
+
+.wrap .dashicons, 
+.wrap .dashicons-before::before,
+.wrap .dashicons::before {
+    font-family: dashicons !important;
+}
+
+.wrap code,
+.wrap code *,
+.wrap pre,
+.wrap pre *,
+.stlcf-shortcode-code {
+    font-family: Consolas, Monaco, "Andale Mono", monospace !important;
+}
+
 /* Master Header Flex Suite Wrapper */
 .stlcf-page-header {
     display: flex;
@@ -27,7 +63,7 @@
 /* Master Navigation Tab Configurations */
 .stlcf-tab-wrapper { margin-bottom: 20px; }
 .stlcf-tab-section { margin-top: 20px; }
-.stlcf-hide-tab { display: none !important; }
+.stlcf-hide-tab { display: none; }
 .stlcf-nav-tab-security { border-left: 2px solid #b91c1c !important; }
 .stlcf-border-row { border-top: 1px solid #f1f5f9; }
 
@@ -366,5 +402,92 @@
     .stlcf-builder-sidebar, .stlcf-categories-form-pane {
         width: 100%;
         max-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   PRO-LEVEL SIDEBAR SETTINGS DASHBOARD LAYOUT
+   ========================================================================== */
+.stlcf-settings-container {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    align-items: flex-start;
+}
+
+.stlcf-settings-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.stlcf-settings-sidebar-tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    border-left: 3px solid transparent;
+}
+
+.stlcf-settings-sidebar-tab:last-child {
+    margin-bottom: 0;
+}
+
+.stlcf-settings-sidebar-tab:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.stlcf-settings-sidebar-tab.active {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-left-color: #0284c7;
+}
+
+.stlcf-settings-sidebar-tab .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.stlcf-settings-sidebar-tab.active .dashicons {
+    color: #0284c7;
+}
+
+.stlcf-settings-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 520px;
+}
+
+.stlcf-settings-content .stlcf-card {
+    margin-top: 0;
+}
+
+.stlcf-settings-conditional-row {
+    transition: all 0.2s ease;
+}
+
+@media screen and (max-width: 960px) {
+    .stlcf-settings-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .stlcf-settings-sidebar {
+        width: 100%;
+        box-sizing: border-box;
     }
 }

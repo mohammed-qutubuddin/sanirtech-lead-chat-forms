@@ -36,7 +36,21 @@ class STLCF_Activator {
             form_data text NOT NULL,
             page_url varchar(255) DEFAULT '' NOT NULL,
             submitted_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-            PRIMARY KEY  (id)
+            PRIMARY KEY  (id),
+            KEY form_id (form_id)
+        ) $charset_collate;";
+
+        // 3. Table to store abandoned/partial lead entries
+        $table_abandoned = $wpdb->prefix . 'stlcf_abandoned_leads';
+        $sql_abandoned = "CREATE TABLE $table_abandoned (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            form_id mediumint(9) NOT NULL,
+            form_data text NOT NULL,
+            page_url varchar(255) DEFAULT '' NOT NULL,
+            ip_address varchar(100) DEFAULT '' NOT NULL,
+            updated_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            PRIMARY KEY  (id),
+            KEY form_id (form_id)
         ) $charset_collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -44,5 +58,9 @@ class STLCF_Activator {
         // Execute queries safely using dbDelta
         dbDelta( $sql_forms );
         dbDelta( $sql_entries );
+        dbDelta( $sql_abandoned );
+
+        // Add redirect option trigger
+        add_option( 'stlcf_do_activation_redirect', true );
     }
 }

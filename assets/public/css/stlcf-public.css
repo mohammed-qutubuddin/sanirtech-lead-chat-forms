@@ -1,7 +1,177 @@
+/* ==========================================================================
+   SANIRTECH LEAD CHAT FORMS - PREMIUM FRONTEND DESIGN SYSTEM
+   ========================================================================== */
+
+/* Card Wrapper Container */
+.stlcf-front-wrapper {
+    max-width: 400px;
+    padding: 28px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stlcf-front-wrapper:hover {
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 1px 4px rgba(15, 23, 42, 0.03);
+    transform: translateY(-2px);
+}
+
+.stlcf-front-wrapper h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+}
+
+/* Fields Styling & Groupings */
+.stlcf-field-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.stlcf-field-label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #475569;
+    letter-spacing: -0.01em;
+}
+
+.stlcf-field-label span {
+    color: #f43f5e;
+    margin-left: 2px;
+}
+
+/* Form Inputs, Textarea, Dropdowns */
+.stlcf-front-wrapper input[type="text"],
+.stlcf-front-wrapper input[type="email"],
+.stlcf-front-wrapper input[type="tel"],
+.stlcf-front-wrapper input[type="number"],
+.stlcf-front-wrapper textarea,
+.stlcf-front-wrapper select {
+    width: 100%;
+    padding: 11px 15px;
+    font-size: 0.925rem;
+    color: #0f172a;
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+}
+
+.stlcf-front-wrapper textarea {
+    resize: vertical;
+}
+
+/* Hover & Focus Interaction States */
+.stlcf-front-wrapper input:hover,
+.stlcf-front-wrapper textarea:hover,
+.stlcf-front-wrapper select:hover {
+    border-color: #cbd5e1;
+    background-color: #f1f5f9;
+}
+
+.stlcf-front-wrapper input:focus,
+.stlcf-front-wrapper textarea:focus,
+.stlcf-front-wrapper select:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* Placeholders styling */
+.stlcf-front-wrapper ::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+/* Double-Button Flex Layout Row */
+.stlcf-btn-flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+/* Submit Control Buttons */
+.stlcf-submit-trigger {
+    flex: 1;
+    min-width: 140px;
+    padding: 13px 20px;
+    font-weight: 750;
+    font-size: 0.95rem;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stlcf-submit-trigger:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stlcf-submit-trigger:active {
+    transform: translateY(0);
+    filter: brightness(0.95);
+}
+
+/* Status Alert Elements */
+.stlcf-status-box {
+    display: none;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    border: 1px solid transparent;
+}
+
+.stlcf-status-success {
+    background-color: #ecfdf5 !important;
+    color: #065f46 !important;
+    border-color: #a7f3d0 !important;
+}
+
+.stlcf-status-error {
+    background-color: #fff5f5 !important;
+    color: #9b1c1c !important;
+    border-color: #fecaca !important;
+}
+
+/* Country Phone Picker Adjustments */
+.stlcf-front-wrapper .iti {
+    width: 100%;
+    display: block;
+}
+
+.stlcf-front-wrapper .iti__flag-container {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
 /* Premium Floating Widget Tooltip Hover Animation Rules */
 .stlcf-floating-container {
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .stlcf-fw-tooltip {
     opacity: 0;
     transform: translateY(10px);
@@ -9,8 +179,138 @@
     box-shadow: 0 4px 15px rgba(15, 23, 42, 0.1) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
+
 /* Triggers elegant visual fade prompt on hover */
 .stlcf-floating-container:hover .stlcf-fw-tooltip {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Breathing Pulse Ring Animation for the Floating Bubble */
+.stlcf-floating-bubble-link {
+    position: relative;
+}
+
+.stlcf-floating-bubble-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.65);
+    animation: stlcfPulse 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes stlcfPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.65);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* Multi-Agent Floating Card Styles */
+.stlcf-agent-item {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.stlcf-agent-item:hover {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.stlcf-multi-agent-panel {
+    animation: stlcfSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes stlcfSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Conversational Navigation Buttons Refinements */
+.stlcf-conversational-nav button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.stlcf-conversational-nav button:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.stlcf-conversational-nav .stlcf-conv-next-btn:active,
+.stlcf-conversational-nav .stlcf-conv-back-btn:active {
+    transform: scale(0.98);
+}
+
+/* Wobble periodic shake animation for floating widget bubble */
+.stlcf-wobble-btn {
+    animation: stlcfWobble 6s infinite !important;
+}
+
+@keyframes stlcfWobble {
+    0%, 90%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    91% {
+        transform: rotate(10deg) scale(1.1);
+    }
+    92% {
+        transform: rotate(-10deg) scale(1.1);
+    }
+    93% {
+        transform: rotate(10deg) scale(1.1);
+    }
+    94% {
+        transform: rotate(-10deg) scale(1.1);
+    }
+    95% {
+        transform: rotate(8deg) scale(1.05);
+    }
+    96% {
+        transform: rotate(-8deg) scale(1.05);
+    }
+    97% {
+        transform: rotate(4deg) scale(1);
+    }
+    98% {
+        transform: rotate(-4deg) scale(1);
+    }
+    99% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes stlcfRotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes stlcfDash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
 }
